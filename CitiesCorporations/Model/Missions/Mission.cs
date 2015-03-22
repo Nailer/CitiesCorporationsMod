@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CitiesCorporations.Model.Missions;
 using ColossalFramework.IO;
 
 namespace CitiesCorporations.Model
@@ -16,10 +17,11 @@ namespace CitiesCorporations.Model
             Failed,
         }
 
-        public Mission(uint missionId, uint templateId, uint corporationId, float createdTimestamp)
+        public Mission(uint missionId, uint templateId, uint corporationId, float createdTimestamp, List<MissionObjective> objectives)
         {
             MissionId = missionId;
             TemplateId = templateId;
+            CorporationId = corporationId;
             CreatedTimestamp = createdTimestamp;
             StartedTimestamp = TIME_NOT_SET;
             FailedTimestamp = TIME_NOT_SET;
@@ -56,6 +58,7 @@ namespace CitiesCorporations.Model
         public float StartedTimestamp { get; private set; }
         public float FailedTimestamp { get; private set; }
         public float CompletedTimestamp { get; private set; }
+        public List<MissionObjective> Objectives { get; private set; }
 
         public void Start(float simulationTimeStamp)
         {
@@ -77,13 +80,49 @@ namespace CitiesCorporations.Model
         }
 
         public void Serialize(DataSerializer s)
-        {            
-
+        {
+            s.WriteUInt16(MissionId);
+            s.WriteUInt16(TemplateId);
+            s.WriteUInt16(CorporationId);
+            s.WriteFloat(CreatedTimestamp);
+            s.WriteFloat(StartedTimestamp);
+            s.WriteFloat(FailedTimestamp);
+            s.WriteFloat(CompletedTimestamp);
+            SerializeObjectives(s);
         }
 
         public void Deserialize(DataSerializer s)
         {
+            MissionId = s.ReadUInt16();
+            TemplateId = s.ReadUInt16();
+            CorporationId = s.ReadUInt16();
+            CreatedTimestamp = s.ReadFloat();
+            StartedTimestamp = s.ReadFloat();
+            FailedTimestamp = s.ReadFloat();
+            CompletedTimestamp = s.ReadFloat();
+            Objectives = DeserializeObjectives(s);
+        }
 
+        private void SerializeObjectives(DataSerializer s)
+        {
+            s.WriteInt16(Objectives.Count);
+            foreach (MissionObjective objective in Objectives)
+            {
+                objective.Serialize(s);
+            }
+        }
+
+        private List<MissionObjective> DeserializeObjectives(DataSerializer s)
+        {
+            int objectiveCount = s.ReadInt16();
+            List<MissionObjective> objectives = new List<MissionObjective>(objectiveCount);
+            for (int i = 0; i < objectiveCount; ++i)
+            {
+                MissionObjective objective = new MissionObjective();
+                objective.Deserialize(s);
+            }
+
+            return objectives;
         }
 
         public void AfterDeserialize(DataSerializer s)

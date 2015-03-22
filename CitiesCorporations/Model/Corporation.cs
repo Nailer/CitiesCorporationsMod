@@ -7,7 +7,8 @@ namespace CitiesCorporations.Model
 {
     class Corporation
     {
-        public string Name { get; set; }
-        public uint Id { get; set; }
+        public string Name { get; private set; }
+        public string LogoName { get; private set; }
+        public uint Id { get; private set; }
     }
 }

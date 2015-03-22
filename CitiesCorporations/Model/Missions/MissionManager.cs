@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CitiesCorporations.Model
 {
-    class MissionManager
+    public class MissionManager
     {
         public List<Mission> MissionList { get; set; }
 

@@ -1,0 +1,40 @@
+Cities Corporations:
+
+
+- Corporations give you monetary reward in return for land and services.
+- Player has a standing at each of the corporations.
+- Intercorporation intrigue with one corp asking you to work against the other.
+- Two factions for each corp type
+
+Corporations:
+
+	- Logging
+		- PinE
+		- GigaLog
+	- Minerals
+		- SaltWave
+		- RockEat
+	- Oil
+		- Mandrill
+		- PetroLove
+	- Farming
+		- Agricorp
+		- Cornsanto
+	- High Tech
+		- Glooble
+		- Glitch
+		
+
+Corporation traits:
+	- 
+	
+Exploitative:
+	- Locking down maximum upgrade level for districts
+	- 
+	
+Demanding:
+	- Require high level housing for districts
+		
+- Sabotage missions can be stuff like making sure there is a traffic jam outside the campuses.
+- Campus building missions for high tech
+- Setting up farms for farming

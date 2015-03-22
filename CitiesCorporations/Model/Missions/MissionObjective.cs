@@ -26,6 +26,11 @@ namespace CitiesCorporations.Model.Missions
             CompletedTimestamp = TIME_NOT_SET;
         }
 
+        public MissionObjective()
+        {
+            
+        }
+
         public State ObjectiveState
         {
             get
