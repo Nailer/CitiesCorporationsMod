@@ -62,7 +62,7 @@ namespace CitiesCorporations
 
         public void OnLoadData()
         {
-            CorporationsSaveData saveData = new CorporationsSaveData(m_serializableData);
+            CorporationsSaveData saveData = CorporationsSaveData.CreateLoadData(m_serializableData);
             CorporationsCore.Instance.RestoreFromSaveData(saveData);    
         }
 

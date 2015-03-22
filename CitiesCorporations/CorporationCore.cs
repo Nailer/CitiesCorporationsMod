@@ -1,6 +1,7 @@
 ﻿using CitiesCorporations.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ICities;
@@ -27,26 +28,28 @@ namespace CitiesCorporations
 
         public void Initiate()
         {
-            this.Initiated = true;
-
-            this.CorporationManager = new CorporationManager();
+            Initiated = true;
+            CorporationManager = new CorporationManager();
         }
 
         public CorporationManager CorporationManager { get; private set; }
 
         public void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            this.CorporationManager.OnUpdate(simulationTimeDelta);
+            CorporationManager.OnUpdate(simulationTimeDelta);
         }
 
         internal void RestoreFromSaveData(CorporationsSaveData saveData)
         {
-            throw new NotImplementedException();
+            Debug.Assert(saveData.Loaded);
+            CorporationManager.MissionList = saveData.MissionList;
         }
 
         public CorporationsSaveData CreateSaveData(ISerializableData serializableData)
         {
-            throw new NotImplementedException();
+            CorporationsSaveData saveData = new CorporationsSaveData(serializableData);
+            saveData.MissionList = CorporationManager.MissionList;
+            return saveData;
         }
     }
 

@@ -63,6 +63,7 @@
     <Compile Include="Model\MissionTemplate.cs" />
     <Compile Include="Model\CorporationsSaveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\SerializationHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

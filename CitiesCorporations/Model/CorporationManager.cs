@@ -9,7 +9,7 @@ namespace CitiesCorporations.Model
     public class CorporationManager
     {
         private List<Corporation> m_corporations;
-        private List<Mission> m_missions; 
+        public List<Mission> MissionList { get; set; }
 
         private const float MISSION_GENERATION_THRESHOLD = 60;
         private float _timeSinceLastMissionGenerated;
