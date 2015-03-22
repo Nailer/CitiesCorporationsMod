@@ -16,7 +16,7 @@ namespace CitiesCorporations.Model
             Failed,
         }
 
-        public Mission(uint missionId, uint templateId, float createdTimestamp)
+        public Mission(uint missionId, uint templateId, uint corporationId, float createdTimestamp)
         {
             MissionId = missionId;
             TemplateId = templateId;
@@ -51,6 +51,7 @@ namespace CitiesCorporations.Model
 
         public uint MissionId { get; private set; }
         public uint TemplateId { get; private set; }
+        public uint CorporationId { get; private set; }
         public float CreatedTimestamp { get; private set; }
         public float StartedTimestamp { get; private set; }
         public float FailedTimestamp { get; private set; }
@@ -77,22 +78,12 @@ namespace CitiesCorporations.Model
 
         public void Serialize(DataSerializer s)
         {            
-            s.WriteUInt16(MissionId);
-            s.WriteUInt16(TemplateId);
-            s.WriteFloat(CreatedTimestamp);
-            s.WriteFloat(StartedTimestamp);
-            s.WriteFloat(FailedTimestamp);
-            s.WriteFloat(CompletedTimestamp);
+
         }
 
         public void Deserialize(DataSerializer s)
         {
-            MissionId = s.ReadUInt16();
-            TemplateId = s.ReadUInt16();
-            CreatedTimestamp = s.ReadFloat();
-            StartedTimestamp = s.ReadFloat();
-            FailedTimestamp = s.ReadFloat();
-            CompletedTimestamp = s.ReadFloat();
+
         }
 
         public void AfterDeserialize(DataSerializer s)

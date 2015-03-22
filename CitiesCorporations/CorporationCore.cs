@@ -33,22 +33,24 @@ namespace CitiesCorporations
         }
 
         public CorporationManager CorporationManager { get; private set; }
+        public MissionManager MissionManager { get; private set; }
 
         public void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             CorporationManager.OnUpdate(simulationTimeDelta);
+            MissionManager.OnUpdate(simulationTimeDelta);
         }
 
         internal void RestoreFromSaveData(CorporationsSaveData saveData)
         {
             Debug.Assert(saveData.Loaded);
-            CorporationManager.MissionList = saveData.MissionList;
+            MissionManager.MissionList = saveData.MissionList;
         }
 
         public CorporationsSaveData CreateSaveData(ISerializableData serializableData)
         {
             CorporationsSaveData saveData = new CorporationsSaveData(serializableData);
-            saveData.MissionList = CorporationManager.MissionList;
+            saveData.MissionList = MissionManager.MissionList;
             return saveData;
         }
     }
