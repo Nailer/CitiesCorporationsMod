@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CitiesCorporations.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ICities;
 using UnityEngine.UI;
 
 namespace CitiesCorporations
@@ -34,7 +36,17 @@ namespace CitiesCorporations
 
         public void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            
+            this.CorporationManager.OnUpdate(simulationTimeDelta);
+        }
+
+        internal void RestoreFromSaveData(CorporationsSaveData saveData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CorporationsSaveData CreateSaveData(ISerializableData serializableData)
+        {
+            throw new NotImplementedException();
         }
     }
 

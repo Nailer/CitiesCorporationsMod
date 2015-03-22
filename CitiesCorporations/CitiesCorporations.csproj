@@ -55,10 +55,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CorporationMod.cs" />
+    <Compile Include="CorporationCore.cs" />
+    <Compile Include="CorporationsMod.cs" />
     <Compile Include="Model\Corporation.cs" />
     <Compile Include="Model\CorporationManager.cs" />
     <Compile Include="Model\Mission.cs" />
+    <Compile Include="Model\MissionTemplate.cs" />
+    <Compile Include="Model\CorporationsSaveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

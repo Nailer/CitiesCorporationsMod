@@ -5,9 +5,8 @@ using System.Text;
 
 namespace CitiesCorporations.Model
 {
-    class Corporation
+    public class MissionTemplate
     {
-        public string Name { get; set; }
-        public uint Id { get; set; }
+
     }
 }

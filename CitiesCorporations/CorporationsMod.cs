@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using CitiesCorporations.Model;
+using ColossalFramework.IO;
 using ICities;
 
 namespace CitiesCorporations
@@ -24,10 +27,12 @@ namespace CitiesCorporations
     {
         void ILoadingExtension.OnCreated(ILoading loading)
         {
+            
         }
 
         void ILoadingExtension.OnLevelLoaded(LoadMode mode)
         {
+
             CorporationsCore.Instance.Initiate();
         }
 
@@ -38,6 +43,33 @@ namespace CitiesCorporations
 
         void ILoadingExtension.OnReleased()
         {
+        }
+    }
+
+    public class CorporationsSerializing : ISerializableDataExtension
+    {
+        private ISerializableData m_serializableData;
+
+        public void OnCreated(ISerializableData serializedData)
+        {
+            m_serializableData = serializedData;
+        }
+
+        public void OnReleased()
+        {
+            
+        }
+
+        public void OnLoadData()
+        {
+            CorporationsSaveData saveData = new CorporationsSaveData(m_serializableData);
+            CorporationsCore.Instance.RestoreFromSaveData(saveData);    
+        }
+
+        public void OnSaveData()
+        {
+            CorporationsSaveData saveData = CorporationsCore.Instance.CreateSaveData(m_serializableData);
+            saveData.Save();
         }
     }
 
@@ -64,6 +96,7 @@ namespace CitiesCorporations
 
         public void OnCreated(IThreading threading)
         {
+            
             this.m_threading = threading;
             this.m_core = CorporationsCore.Instance;
             this.m_core.Managers = threading.managers;
