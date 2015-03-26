@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace CitiesCorporations.Model
 {
@@ -42,7 +43,8 @@ namespace CitiesCorporations.Model
         {
             List<Corporation> corporations = new List<Corporation>()
             {
-                new Corporation(),
+                new Corporation(CORPORATION_ID_MANDRILL, "Mandrill", new Color(1,1,0)),
+                new Corporation(CORPORATION_ID_PETROIL, "Petroil", new Color(1,0,1)),
             };
 
             return corporations;

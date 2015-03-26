@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CitiesCorporations.Model.Missions;
+using CitiesCorporations.Utils;
 using ColossalFramework.IO;
 
 namespace CitiesCorporations.Model
@@ -17,15 +18,16 @@ namespace CitiesCorporations.Model
             Failed,
         }
 
-        public Mission(uint missionId, uint templateId, uint corporationId, float createdTimestamp, List<MissionObjective> objectives)
+        public Mission(uint missionId, uint templateId, uint issuerId, float createdTimestamp, List<MissionObjective> objectives)
         {
             MissionId = missionId;
             TemplateId = templateId;
-            CorporationId = corporationId;
+            IssuerId = issuerId;
             CreatedTimestamp = createdTimestamp;
             StartedTimestamp = TIME_NOT_SET;
             FailedTimestamp = TIME_NOT_SET;
             CompletedTimestamp = TIME_NOT_SET;
+            Objectives = objectives;
         }
 
         public State MissionState
@@ -53,7 +55,7 @@ namespace CitiesCorporations.Model
 
         public uint MissionId { get; private set; }
         public uint TemplateId { get; private set; }
-        public uint CorporationId { get; private set; }
+        public uint IssuerId { get; private set; }
         public float CreatedTimestamp { get; private set; }
         public float StartedTimestamp { get; private set; }
         public float FailedTimestamp { get; private set; }
@@ -83,7 +85,7 @@ namespace CitiesCorporations.Model
         {
             s.WriteUInt16(MissionId);
             s.WriteUInt16(TemplateId);
-            s.WriteUInt16(CorporationId);
+            s.WriteUInt16(IssuerId);
             s.WriteFloat(CreatedTimestamp);
             s.WriteFloat(StartedTimestamp);
             s.WriteFloat(FailedTimestamp);
@@ -95,7 +97,7 @@ namespace CitiesCorporations.Model
         {
             MissionId = s.ReadUInt16();
             TemplateId = s.ReadUInt16();
-            CorporationId = s.ReadUInt16();
+            IssuerId = s.ReadUInt16();
             CreatedTimestamp = s.ReadFloat();
             StartedTimestamp = s.ReadFloat();
             FailedTimestamp = s.ReadFloat();
@@ -105,6 +107,11 @@ namespace CitiesCorporations.Model
 
         private void SerializeObjectives(DataSerializer s)
         {
+            if (s != null)
+            {
+                LogHelper.LogFormat("DataSerializer is a thing"); 
+            }
+            LogHelper.LogFormat("SerializeObjectives"); 
             s.WriteInt16(Objectives.Count);
             foreach (MissionObjective objective in Objectives)
             {

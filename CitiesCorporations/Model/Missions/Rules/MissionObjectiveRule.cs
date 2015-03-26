@@ -8,6 +8,13 @@ namespace CitiesCorporations.Model.Missions
 {
     public abstract class MissionObjectiveRule
     {
-        public abstract bool EvaluateMissionObjectiveRule(MissionObjective objective, IManagers managers);
+        public enum RuleEvaluationResult
+        {
+            Incomplete,
+            Passed,
+            Failed
+        }
+
+        public abstract RuleEvaluationResult EvaluateMissionObjectiveRule(MissionObjective objective, IManagers managers);
     }
 }

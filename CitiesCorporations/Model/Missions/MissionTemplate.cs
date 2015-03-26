@@ -6,9 +6,6 @@ namespace CitiesCorporations.Model.Missions
     {
         public uint TemplateId { get; private set; }
         public string MissionText { get; private set; }
-
-        public uint CorporationId { get; private set; }
-
         public List<MissionObjectiveTemplate> MissionObjectiveTempates { get; private set; }
 
         public MissionTemplate(uint templateId, string missionText, List<MissionObjectiveTemplate> missionObjectiveTempates)

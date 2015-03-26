@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using CitiesCorporations.Model.Missions;
 using CitiesCorporations.Model.Missions.Rules;
+using CitiesCorporations.Utils;
 
 namespace CitiesCorporations.Model
 {
     class MissionTemplateDatabase
     {
+        private static uint CURRENT_ID;
+        public static readonly uint MISSION_ID_MANDRILL_TIMEOUT = CURRENT_ID++;
+        private static readonly uint MISSION_ID_MANDRILL_TIMEOUT_OBJ1 = CURRENT_ID++;
+
         private static MissionTemplateDatabase _instance;
 
         public static MissionTemplateDatabase Instance
@@ -35,6 +40,13 @@ namespace CitiesCorporations.Model
             m_templates = CreateTemplateMap(templates);
         }
 
+        public MissionTemplate GetTemplate(uint templateId)
+        {
+            MissionTemplate template = null;
+            m_templates.TryGetValue(templateId, out template);
+            return template;
+        }
+
         private Dictionary<uint, MissionTemplate> CreateTemplateMap(List<MissionTemplate> templates)
         {
             Dictionary<uint, MissionTemplate> dictionary = new Dictionary<uint, MissionTemplate>(templates.Count);
@@ -49,10 +61,10 @@ namespace CitiesCorporations.Model
         private List<MissionTemplate> CreateTemplates()
         {
             List<MissionTemplate> templates = new List<MissionTemplate>();
-            templates.Add(new MissionTemplate(GetNextId(), "Time is running out!", 
+            templates.Add(new MissionTemplate(MISSION_ID_MANDRILL_TIMEOUT, "Time is running out!", 
                 new List<MissionObjectiveTemplate>
                 {
-                    new MissionObjectiveTemplate(GetNextObjectiveId(), "Do stuff before the time runs out.", 
+                    new MissionObjectiveTemplate(MISSION_ID_MANDRILL_TIMEOUT_OBJ1, "Do stuff before the time runs out.", 
                         new List<MissionObjectiveRule>
                     {
                         new TimeoutRule(300)
@@ -60,24 +72,9 @@ namespace CitiesCorporations.Model
                 })
             );
 
+            LogHelper.Log(templates);
             return templates;
-        }
 
-        MissionTemplate GetTemplate(uint templateId)
-        {
-            MissionTemplate template = null;
-            m_templates.TryGetValue(templateId, out template);
-            return template;
-        }
-
-        private uint GetNextId()
-        {
-            return m_currentMissionId++;
-        }
-
-        private uint GetNextObjectiveId()
-        {
-            return m_currentObjectiveId++;
         }
     }
 }

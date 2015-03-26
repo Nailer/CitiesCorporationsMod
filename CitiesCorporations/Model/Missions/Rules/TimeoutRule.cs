@@ -15,9 +15,9 @@ namespace CitiesCorporations.Model.Missions.Rules
             m_timeoutDuration = timeoutDuration;
         }
 
-        public override bool EvaluateMissionObjectiveRule(MissionObjective objective, IManagers managers)
+        public override RuleEvaluationResult EvaluateMissionObjectiveRule(MissionObjective objective, IManagers managers)
         {
-            return ElapsedMissionObjectiveTime(objective, managers.threading.simulationTime) >= m_timeoutDuration;
+            return ElapsedMissionObjectiveTime(objective, managers.threading.simulationTime) >= m_timeoutDuration ? RuleEvaluationResult.Failed :  RuleEvaluationResult.Passed;
         }
 
         public string CreateObjectiveStringFromObjective(MissionObjective objective, IManagers managers)

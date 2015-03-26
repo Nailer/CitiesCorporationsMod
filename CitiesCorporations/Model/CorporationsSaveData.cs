@@ -22,8 +22,13 @@ namespace CitiesCorporations.Model
 
         public static CorporationsSaveData CreateLoadData(ISerializableData serializableData)
         {
+            LogHelper.Log("Loadings");
             CorporationsSaveData data = new CorporationsSaveData(serializableData);
+            LogHelper.Log("Data created");
             data.Load();
+
+            LogHelper.Log("Data created");
+            UnityEngine.Debug.Break();
             return data;
         }
 
@@ -34,7 +39,9 @@ namespace CitiesCorporations.Model
 
         public void Save()
         {
+            LogHelper.LogFormat("Save()"); 
             m_serializationHelper.SerializeArray<Mission>(MISSION_LIST_KEY, MissionList.ToArray());
+            LogHelper.LogFormat("DidNotSave()"); 
         }
 
         public void Load()

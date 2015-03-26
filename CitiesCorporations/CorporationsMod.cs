@@ -5,12 +5,13 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using CitiesCorporations.Model;
+using CitiesCorporations.Utils;
 using ColossalFramework.IO;
 using ICities;
 
 namespace CitiesCorporations
 {
-    public class CorporationsMod : ICities.IUserMod
+    public class CorporationsMod1 : ICities.IUserMod
     {
         public string Description
         {
@@ -25,15 +26,29 @@ namespace CitiesCorporations
 
     public class CorporationsSetup : ILoadingExtension
     {
+        private ILoading m_loading;
+        private bool m_loaded = false;
         void ILoadingExtension.OnCreated(ILoading loading)
         {
-            
+            m_loading = loading;
+            if (loading.loadingComplete && !m_loaded)
+            {
+                CorporationsCore.Instance.Initiate(loading.managers);
+            }
         }
 
         void ILoadingExtension.OnLevelLoaded(LoadMode mode)
         {
-
-            CorporationsCore.Instance.Initiate();
+            if (m_loading.loadingComplete)
+            {
+                UnityEngine.Debug.Log("OnLoaded");
+                CorporationsSaveData data = CorporationsSerializing.SerializingInstance.SaveData;
+                if (data != null)
+                {
+                    UnityEngine.Debug.Log("data");
+                    CorporationsCore.Instance.RestoreFromSaveData(data);
+                }
+            }           
         }
 
         void ILoadingExtension.OnLevelUnloading()
@@ -49,10 +64,14 @@ namespace CitiesCorporations
     public class CorporationsSerializing : ISerializableDataExtension
     {
         private ISerializableData m_serializableData;
+        public static CorporationsSerializing SerializingInstance;
+        public CorporationsSaveData SaveData { get; private set; }
 
         public void OnCreated(ISerializableData serializedData)
         {
+            //UnityEngine.Debug.Log("CorporationsSerializing created");
             m_serializableData = serializedData;
+            SerializingInstance = this;
         }
 
         public void OnReleased()
@@ -62,14 +81,28 @@ namespace CitiesCorporations
 
         public void OnLoadData()
         {
-            CorporationsSaveData saveData = CorporationsSaveData.CreateLoadData(m_serializableData);
-            CorporationsCore.Instance.RestoreFromSaveData(saveData);    
+            //LogHelper.LogFormat("OnLoadData"); 
+            
+            //UnityEngine.Debug.Log("Test");
+            //ChirpLog.Debug(String.Format("OnLoadData"));
+            //LogHelper.Log("OnLoad");
+            SaveData = CorporationsSaveData.CreateLoadData(m_serializableData);
+            //LogHelper.Log("PostLoad");
+            //ChirpLog.Debug(String.Format("Restored mission count {0}", saveData.MissionList.Count));
+            //ChirpLog.Flush();
+            //foreach (Mission mission in saveData.MissionList)
+            //{
+            //    ChirpLog.Debug(String.Format("Restored mission {0} {1}", mission.MissionId, mission.CreatedTimestamp));
+            //}
+            //CorporationsCore.Instance.RestoreFromSaveData(saveData);    
         }
 
         public void OnSaveData()
         {
             CorporationsSaveData saveData = CorporationsCore.Instance.CreateSaveData(m_serializableData);
+            LogHelper.LogFormat("Created save data"); 
             saveData.Save();
+            LogHelper.LogFormat("Saved"); 
         }
     }
 
@@ -96,10 +129,9 @@ namespace CitiesCorporations
 
         public void OnCreated(IThreading threading)
         {
-            
             this.m_threading = threading;
             this.m_core = CorporationsCore.Instance;
-            this.m_core.Managers = threading.managers;
+            this.m_core.Initiate(threading.managers);
         }
 
         public void OnReleased()
